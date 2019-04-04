@@ -20,7 +20,7 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////
 
 Arena::Arena(int nRows, int nCols)
-: m_rows(nRows), m_cols(nCols), m_player(nullptr), m_nZombies(0)
+: m_rows(nRows), m_cols(nCols), m_player(nullptr), m_nZombies(0), m_history(nRows,nCols)
 {
     if (nRows <= 0  ||  nCols <= 0  ||  nRows > MAXROWS  ||  nCols > MAXCOLS)
     {
@@ -55,6 +55,11 @@ Player* Arena::player() const
 int Arena::zombieCount() const
 {
     return m_nZombies;
+}
+
+History& Arena::history()
+{
+    return m_history;
 }
 
 int Arena::numZombiesAt(int r, int c) const
@@ -171,6 +176,7 @@ bool Arena::attackZombieAt(int r, int c, int dir)
     // false otherwise (no zombie there, or the attack did not destroy the
     // zombie).
     int k = 0;
+
     for ( ; k < m_nZombies; k++)
     {
         if (m_zombies[k]->row() == r  &&  m_zombies[k]->col() == c)
@@ -178,6 +184,8 @@ bool Arena::attackZombieAt(int r, int c, int dir)
     }
     if (k < m_nZombies  &&  m_zombies[k]->getAttacked(dir))  // zombie dies
     {
+        cout<<"zombie killed at "<<m_zombies[k]->row()<<" ,"<<m_zombies[k]->col()<<endl;
+        m_history.record(m_zombies[k]->row(), m_zombies[k]->col());
         delete m_zombies[k];
         m_zombies[k] = m_zombies[m_nZombies-1];
         m_nZombies--;

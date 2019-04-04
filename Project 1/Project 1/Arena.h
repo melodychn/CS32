@@ -9,7 +9,7 @@
 #ifndef Arena_h
 #define Arena_h
 #include "global.h"
-
+#include "History.h"
 class Player;
 class Zombie;
 
@@ -28,7 +28,8 @@ public:
     int     numZombiesAt(int r, int c) const;
     bool    determineNewPosition(int& r, int& c, int dir) const;
     void    display() const;
-    
+    History& history();
+     
     // Mutators
     bool   addZombie(int r, int c);
     bool   addPlayer(int r, int c);
@@ -41,5 +42,7 @@ private:
     Player* m_player;
     Zombie* m_zombies[MAXZOMBIES];
     int     m_nZombies;
+    History m_history;
+    
 };
 #endif /* Arena_h */

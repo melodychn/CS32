@@ -13,6 +13,7 @@
 		BADA54BA2255B25B00883F74 /* Player.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54B82255B25B00883F74 /* Player.cpp */; };
 		BADA54BD2255B29900883F74 /* Arena.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54BB2255B29900883F74 /* Arena.cpp */; };
 		BADA54C02255B32E00883F74 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54BE2255B32E00883F74 /* Game.cpp */; };
+		BADA54C32255CC4B00883F74 /* History.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54C12255CC4B00883F74 /* History.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -40,6 +41,8 @@
 		BADA54BC2255B29900883F74 /* Arena.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Arena.h; sourceTree = "<group>"; };
 		BADA54BE2255B32E00883F74 /* Game.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Game.cpp; sourceTree = "<group>"; };
 		BADA54BF2255B32E00883F74 /* Game.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Game.h; sourceTree = "<group>"; };
+		BADA54C12255CC4B00883F74 /* History.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = History.cpp; sourceTree = "<group>"; };
+		BADA54C22255CC4B00883F74 /* History.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = History.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +86,8 @@
 				BADA54B62255B21300883F74 /* Zombie.h */,
 				BADA54B32255B0B400883F74 /* utilities.cpp */,
 				BADA54B22255B02500883F74 /* global.h */,
+				BADA54C12255CC4B00883F74 /* History.cpp */,
+				BADA54C22255CC4B00883F74 /* History.h */,
 			);
 			path = "Project 1";
 			sourceTree = "<group>";
@@ -149,6 +154,7 @@
 				BADA54C02255B32E00883F74 /* Game.cpp in Sources */,
 				BADA54B72255B21300883F74 /* Zombie.cpp in Sources */,
 				BADA54AC2255AB6F00883F74 /* main.cpp in Sources */,
+				BADA54C32255CC4B00883F74 /* History.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
