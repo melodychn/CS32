@@ -23,4 +23,6 @@ private:
     Arena* m_arena;
 };
 
+int decodeDirection(char dir);
+
 #endif /* Game_h */
