@@ -7,7 +7,7 @@
 //
 
 #include "Player.h"
-#include "global.h"
+#include "globals.h"
 #include "Arena.h"
 #include <iostream>
 #include <string>

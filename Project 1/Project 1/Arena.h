@@ -8,7 +8,7 @@
 
 #ifndef Arena_h
 #define Arena_h
-#include "global.h"
+#include "globals.h"
 #include "History.h"
 class Player;
 class Zombie;

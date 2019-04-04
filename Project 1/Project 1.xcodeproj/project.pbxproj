@@ -31,7 +31,7 @@
 /* Begin PBXFileReference section */
 		BADA54A82255AB6F00883F74 /* Project 1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Project 1"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADA54AB2255AB6F00883F74 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		BADA54B22255B02500883F74 /* global.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = global.h; sourceTree = "<group>"; };
+		BADA54B22255B02500883F74 /* globals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = globals.h; sourceTree = "<group>"; };
 		BADA54B32255B0B400883F74 /* utilities.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = utilities.cpp; sourceTree = "<group>"; };
 		BADA54B52255B21300883F74 /* Zombie.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Zombie.cpp; sourceTree = "<group>"; };
 		BADA54B62255B21300883F74 /* Zombie.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Zombie.h; sourceTree = "<group>"; };
@@ -85,7 +85,7 @@
 				BADA54B52255B21300883F74 /* Zombie.cpp */,
 				BADA54B62255B21300883F74 /* Zombie.h */,
 				BADA54B32255B0B400883F74 /* utilities.cpp */,
-				BADA54B22255B02500883F74 /* global.h */,
+				BADA54B22255B02500883F74 /* globals.h */,
 				BADA54C12255CC4B00883F74 /* History.cpp */,
 				BADA54C22255CC4B00883F74 /* History.h */,
 			);

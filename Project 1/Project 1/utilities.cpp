@@ -6,7 +6,7 @@
 //  Copyright © 2019 Melody Chen. All rights reserved.
 //
 
-#include "global.h"
+#include "globals.h"
 #include <iostream>
 #include <string>
 #include <random>

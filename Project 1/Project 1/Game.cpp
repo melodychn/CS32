@@ -7,7 +7,7 @@
 //
 
 #include "Game.h"
-#include "global.h"
+#include "globals.h"
 #include "Arena.h"
 #include "Player.h"
 #include "History.h"

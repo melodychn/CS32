@@ -25,7 +25,6 @@ bool History::record(int r, int c)
 {
     
     if(r<=m_Rows && c<=m_Cols){
-        cout<<"recording: "<<r-1<<", "<<c-1<<endl;
         grid[r-1][c-1]++;
         return true;
     }
