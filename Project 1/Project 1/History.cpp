@@ -7,9 +7,9 @@
 //
 
 #include "History.h"
-#include "Arena.h"
 #include <iostream>
 using namespace std;
+
 History::History(int nRows, int nCols):m_Rows(nRows), m_Cols(nCols)
 {
     for(int r = 0; r<m_Rows;r++){
@@ -23,9 +23,9 @@ History::History(int nRows, int nCols):m_Rows(nRows), m_Cols(nCols)
 
 bool History::record(int r, int c)
 {
-    
-    if(r<=m_Rows && c<=m_Cols){
-        grid[r-1][c-1]++;
+    if(r<=m_Rows && c<=m_Cols && r>=1 && c>=1){
+        if(grid[r-1][c-1]<26)
+            grid[r-1][c-1]++;
         return true;
     }
     return false;

@@ -10,9 +10,9 @@
 #include "globals.h"
 #include "Arena.h"
 #include "Player.h"
-#include "History.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -75,9 +75,8 @@ void Game::play()
         return;
     while ( ! m_arena->player()->isDead()  &&  m_arena->zombieCount() > 0)
     {
-        bool h_func = false;
         cout << endl;
-        cout << "Move (u/d/l/r/h/q): ";
+        cout << "Move (u/d/l/r//h/q): ";
         string action;
         getline(cin,action);
         if (action.size() == 0)  // player stands
@@ -98,18 +97,14 @@ void Game::play()
                     p->moveOrAttack(decodeDirection(action[0]));
                     break;
                 case 'h':
-                    h_func = true;
                     m_arena->history().display();
-                    cout<<"Press enter to continue."<<endl;
-                    string response;
+                    cout<<"Press enter to continue.";
                     cin.ignore(10000,'\n');
-                    break;
+                    m_arena->display();
+                    continue;
             }
         }
-        if(h_func==false){
-            m_arena->moveZombies();
-            
-        }
+        m_arena->moveZombies();
         m_arena->display();
     }
 }

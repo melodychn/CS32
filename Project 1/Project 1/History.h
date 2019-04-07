@@ -10,7 +10,6 @@
 #define History_h
 #include "globals.h"
 
-class Arena;
 class History
 {
 public:
