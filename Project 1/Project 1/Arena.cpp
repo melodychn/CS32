@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "Zombie.h"
 #include "Player.h"
+#include "History.h"
 #include <iostream>
 #include <cstdlib>
 

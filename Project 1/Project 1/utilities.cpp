@@ -7,7 +7,6 @@
 //
 
 #include "globals.h"
-#include <iostream>
 #include <random>
 #include <utility>
 #include <cstdlib>

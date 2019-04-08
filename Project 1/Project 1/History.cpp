@@ -17,7 +17,6 @@ History::History(int nRows, int nCols):m_Rows(nRows), m_Cols(nCols)
             grid[r][c]=0;
         }
     }
-    
 }
 
 

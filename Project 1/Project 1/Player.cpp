@@ -7,7 +7,6 @@
 //
 
 #include "Player.h"
-#include "globals.h"
 #include "Arena.h"
 #include <iostream>
 #include <cstdlib>
