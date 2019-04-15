@@ -24,17 +24,23 @@
 //    
 //    // Failure if we try to insert a sixth item into b
 //    assert(b.insert(v) == -1);
-//    
+//    b.erase(0); //erase one item
+//    assert(b.insert(v) != -1);  //able to insert now
 //    // When two Sequences' contents are swapped, their capacities are
 //    // swapped as well:
 //    a.swap(b);
-//    a.dump();
-//    cout<<"a size: "<<a.size()<<endl;
-//    cout<<"b size: "<<b.size()<<endl;
-//    b.dump();
-//    assert(b.insert(v) != -1);
+//    assert(a.size()==5); //check if their sizes are swapped
+//    assert(b.size()==0); //check if sizes are swapped
+//    assert(b.find(v)==-1);
+//    assert(b.insert(v) != -1); //check if you're able to insert stuff into b now
+//    assert(b.find(v)==0); //check if the first instance of v is at 0
 //    assert(a.insert(v) == -1);
-//    
+//    Sequence d = a;
+//    assert(d.insert(v) == -1);
+//    a = b;
+//    assert(a.insert(v) != -1);
+//    assert(a.find(0)==0);
+//    assert(a.size()==2);
 //    
 //     return 0;
 //    
