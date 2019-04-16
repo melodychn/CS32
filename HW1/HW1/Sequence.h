@@ -9,7 +9,7 @@
 #ifndef Sequence_h
 #define Sequence_h
 #include <string>
-using ItemType = std::string;
+using ItemType = unsigned long;
 const int DEFAULT_MAX_ITEMS = 250;
 class Sequence
 {

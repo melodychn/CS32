@@ -39,7 +39,7 @@ int Sequence::insert(int pos, const ItemType& value)
         if(pos >=0 && pos <= m_length){
             //shift everything backwards
             if(pos!=m_length){ //check if position == size
-                for(int k = m_length; k>=pos; k--)
+                for(int k = m_length-1; k>=pos; k--)
                     array[k+1]=array[k];
             }
             array[pos]= value;
@@ -94,11 +94,10 @@ int Sequence::remove(const ItemType& value)
 // number of items removed (which will be 0 if no item == value).
 {
     int count = 0;
-    for(int k = 0; k<m_length; k++){
+    for(int k = m_length-1; k>=0; k--){
         if(array[k]==value){
             erase(k);
             count++;
-            k--;
         }
     }
     return count;

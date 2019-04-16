@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BAB9A0FA22656A9700811B4F /* testSequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BAB9A0F922656A9700811B4F /* testSequence.cpp */; };
 		BADA54D1225EFD2100883F74 /* testScoreList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54D0225EFD2100883F74 /* testScoreList.cpp */; };
 		BADA54D9225F038000883F74 /* Sequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54D8225F038000883F74 /* Sequence.cpp */; };
 		BADA54DC2260348100883F74 /* ScoreList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BADA54DA2260348100883F74 /* ScoreList.cpp */; };
@@ -27,6 +28,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BAB9A0F922656A9700811B4F /* testSequence.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testSequence.cpp; sourceTree = "<group>"; };
 		BADA54CD225EFD2100883F74 /* HW1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = HW1; sourceTree = BUILT_PRODUCTS_DIR; };
 		BADA54D0225EFD2100883F74 /* testScoreList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testScoreList.cpp; sourceTree = "<group>"; };
 		BADA54D7225EFD4A00883F74 /* Sequence.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sequence.h; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				BADA54D0225EFD2100883F74 /* testScoreList.cpp */,
+				BAB9A0F922656A9700811B4F /* testSequence.cpp */,
 				BADA54DD2260422B00883F74 /* newSequence.cpp */,
 				BADA54DE2260422B00883F74 /* newSequence.h */,
 				BADA54E02260438B00883F74 /* testnewSequence.cpp */,
@@ -138,6 +141,7 @@
 			files = (
 				BADA54E12260438B00883F74 /* testnewSequence.cpp in Sources */,
 				BADA54DC2260348100883F74 /* ScoreList.cpp in Sources */,
+				BAB9A0FA22656A9700811B4F /* testSequence.cpp in Sources */,
 				BADA54D9225F038000883F74 /* Sequence.cpp in Sources */,
 				BADA54D1225EFD2100883F74 /* testScoreList.cpp in Sources */,
 				BADA54DF2260422B00883F74 /* newSequence.cpp in Sources */,
