@@ -10,16 +10,15 @@
 #include <iostream>
 using namespace std;
 int main() {
-    
         Sequence a;   // a can hold at most 1000 items
         Sequence b;      // b can hold at most 5 items
         Sequence c;         // c can hold at most DEFAULT_MAX_ITEMS items
         ItemType v = 0;
-    
+
         // No failures inserting 5 items into b
         for (int k = 0; k < 250; k++)
             assert(b.insert(v) != -1);
-    
+
         // Failure if we try to insert a sixth item into b
         assert(b.insert(v) == -1);
         b.erase(0); //erase one item
@@ -39,7 +38,7 @@ int main() {
         assert(a.insert(v) != -1);
         assert(a.find(0)==0);
         assert(a.size()==2);
-    
+
         Sequence e;
         e.insert(5);
         e.insert(1);
@@ -67,7 +66,7 @@ int main() {
         e.insert(0);
         assert(e.remove(0)==3); //should remove all zeroes
         assert(e.size()==0);
-    
+
         Sequence f;
         assert(f.set(1, 5)==false);
         f.insert(0);
@@ -75,6 +74,7 @@ int main() {
         f.get(0, index0);
         assert(index0==5);
     
+
 //        Sequence h;
 //        Sequence g;
 //        assert(h.insert(0, "hi")==0);
@@ -117,7 +117,7 @@ int main() {
 //               s.find("matzo") == 2);
         cerr<<"Passed all test cases"<<endl;
         return 0;
-    
+
 }
 
 

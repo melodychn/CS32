@@ -12,7 +12,6 @@
 #include <cassert>
 using namespace std;
 int main() {
-
     Sequence a(1000);   // a can hold at most 1000 items
     Sequence b(5);      // b can hold at most 5 items
     Sequence c;         // c can hold at most DEFAULT_MAX_ITEMS items
@@ -76,7 +75,6 @@ int main() {
     assert(f.set(0, 5)==true);
     f.get(0, index0);
     assert(index0==5);
-
 
     cerr<<"passed all test cases"<<endl;
      return 0;
