@@ -68,12 +68,12 @@ int Sequence::insert(int pos, const ItemType& value)
 // if pos is equal to size(), the value is inserted at the end.
 {
     if(pos >=0 && pos <= m_length){
-        Node* p = dummy;
-        for(int k = -1; k<pos; p=p->next, k++)
+        Node* p = dummy->next;
+        for(int k = 0; k<pos; p=p->next, k++)
             ;
         Node* newGuy = new Node;
         newGuy->value = value;
-        newGuy->next = p->prev->next;
+        newGuy->next = p;
         newGuy->prev = p->prev;
         p->prev->next = newGuy;
         p->prev = newGuy;

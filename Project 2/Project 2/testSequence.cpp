@@ -11,7 +11,6 @@
 #include "Sequence.h"
 #include <cassert>
 using namespace std;
-
 int main() {
     Sequence a;
     assert(a.insert(0,1)==0); //testing insert with size 0
@@ -148,6 +147,7 @@ int main() {
     assert(test==7);
     k.get(1, test);
     assert(test==4);
+    Sequence y;
     interleave(i, z, i); //test aliasing
     i.get(0, test);
     assert(test==7); //test if value changed
@@ -161,6 +161,7 @@ int main() {
     assert(test==22); //test if value changed
     i.get(9, test);
     assert(test==25); //test if value changed
+
     cerr<<"passed all test cases"<<endl;
     return 0;
 
