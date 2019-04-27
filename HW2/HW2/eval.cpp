@@ -6,14 +6,15 @@
 //  Copyright © 2019 Melody Chen. All rights reserved.
 //
 
-#include <stdio.h>
 #include <string>
 #include <stack>
 #include <iostream>
 #include <cassert>
 using namespace std;
+
 bool convert(string infix, string& postfix);
 bool evaluale_postfix(string postfix, char & result);
+
 int evaluate(string infix, string& postfix, bool& result)
 // Evaluates a boolean expression
 //   If infix is a syntactically valid infix boolean expression,
@@ -23,22 +24,23 @@ int evaluate(string infix, string& postfix, bool& result)
 //   that case, postfix may or may not be changed, but result must
 //   be unchanged.
 {
-    if(!convert(infix, postfix))
+    if(!convert(infix, postfix)) //convert to postfix, if convert returns false, not valid string
         return 1;
     char res = ' ';
-    if(!evaluale_postfix(postfix, res))
+    if(!evaluale_postfix(postfix, res)) //evaluate, if eval returns false, not valid string
         return 1;
     if(res=='T') result = true;
     if(res=='F') result = false;
     return 0;
 }
+
 bool convert(string infix, string& postfix)
 {
     //initialize postfix to empty
     postfix = "";
     //initialize operator stack to empty
-    stack<char> postfix_s;
     stack<char> opt_stack;
+    stack<char> postfix_s; //stack in postfix notation
     //if infix is empty
     if(infix.size()==0)
         return false;
@@ -50,95 +52,97 @@ bool convert(string infix, string& postfix)
         {
             case 'T':
             case 'F':
-                if(k>0&&(infix[k-1]=='T'||infix[k-1]=='T'))
+                //check for what comes before an operand cannot be an operand
+                if(k > 0&&(infix[k-1]=='T'||infix[k-1]=='T'))
                     return false;
                 postfix_s.push(infix[k]);
                 count++;
                 break;
-                //case (
             case '(':
-                count = 0;
+                count = 0; //count reset every time (
                 opt_stack.push(infix[k]);
                 break;
             case ')':
-                //pop stack until matching (
-                if(opt_stack.top()=='('&&postfix_s.empty())
+                if(opt_stack.top()=='('&&postfix_s.empty()) //not a valid string if () with nothing valid inside
                     return false;
-                while(opt_stack.top()!='(')
+                while(opt_stack.top()!='(') //pop stack until matching (
                 {
                     postfix_s.push(opt_stack.top());
                     opt_stack.pop();
                 }
-                if(count%2==0)
+                if(count%2==0) //check for only odd # inside ()
                     return false;
                 opt_stack.pop();
                 break;
             case '!':
                 if(k==infix.size()-1||infix[k+1]=='&'||infix[k+1]=='^'||infix[k+1]==')')
+                    //! cannot be at end and cannot come before & ^ )
                     return false;
                 opt_stack.push(infix[k]);
                 break;
             case '&':
             case '^':
                 count++;
-                bool one;
-                bool two;
+                bool one; //check for precedence
+                bool two; //check for precedence
                 while(!opt_stack.empty()&&opt_stack.top()!='('){
                     one = infix[k]=='&'&&(opt_stack.top()=='&'||opt_stack.top()=='!');
                     two = infix[k]=='^'&&(opt_stack.top()=='&'||opt_stack.top()=='!'||opt_stack.top()=='^');
-                    if(!(one||two)){
+                    if(!(one||two)){ //if current & ^ does not fulfill one and two
                         break;
                     }
                     postfix_s.push(opt_stack.top());
                     opt_stack.pop();
                 }
-                opt_stack.push(infix[k]);
+                opt_stack.push(infix[k]); //push current operator onto stack
                 break;
-            case ' ':
+            case ' ': //spaces are okay
                 break;
-            default:
+            default: //fails if anything else is put in
                 return false;
         }
     }
-    //append operator to postfix stack
+    //append operator stack to postfix stack
     while (!opt_stack.empty()) {
         postfix_s.push(opt_stack.top());
         opt_stack.pop();
     }
-    stack<char> temp;
-    //flip the postfix stack
+    stack<char> temp; //temp stack to hold values
+    //flip the postfix stack with temp stack
     while(!postfix_s.empty()){
         temp.push(postfix_s.top());
         postfix_s.pop();
     }
-    //append to postfix string
+    //append to postfix string in right order
     while (!temp.empty()) {
         postfix+=temp.top();
         temp.pop();
     }
     return true;
 }
+
 bool evaluale_postfix(string postfix, char & result)
 {
-    stack<char> opd;
+    stack<char> opd; //initiate operand stack
     //loop through postfix
     for(int k=0; k<postfix.size();k++){
-        //operand case
-        if(postfix[k]=='T'||postfix[k]=='F'){
+        if(postfix[k]=='T'||postfix[k]=='F'){ //operand case
             opd.push(postfix[k]);
         }else if(postfix[k]=='!'){
             char temp = opd.top();
             opd.pop();
-            //apply !
+            //apply ! logic
             if(temp=='T')
                 opd.push('F');
             else if(temp=='F')
                 opd.push('T');
         }else if((postfix[k]=='&'||postfix[k]=='^')&&(opd.size()>=2)){
+            //can only apply & ^ when there's two operand to operate on
             char opd2 = opd.top();
             opd.pop();
             char opd1 = opd.top();
             opd.pop();
+            //apply logic for & ^
             if(postfix[k]=='&'){
                 if(opd2==opd1)
                     opd.push(opd1);
@@ -150,12 +154,11 @@ bool evaluale_postfix(string postfix, char & result)
                 else
                     opd.push('F');
             }
-        }else{
+        }else{ //all other cases
             return false;
         }
     }
-    //if opd size!= 1
-    if(opd.size()!=1)
+    if(opd.size()!=1) //if whats left is more than one item
         return false;
     result = opd.top();
     return true;
@@ -220,7 +223,23 @@ int main()
     assert(evaluate(test, result, res)==0&&res==true);
     test = "!T";
     assert(evaluate(test, result, res)==0&&res==false);
+    test = "T(F)";
+    assert(evaluate(test, result, res)==1);
+    test = "T(F&T)";
+    assert(evaluate(test, result, res)==1);
+    test = "&";
+    assert(evaluate(test, result, res)==1);
+    test = "!() ";
+    assert(evaluate(test, result, res)==1);
+    test = "T&F!";
+    assert(evaluate(test, result, res)==1);
+    test = "(!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!T)&(!!!!(!!T))";
+    assert(evaluate(test, result, res)==0 && res == false);
+    test = "((((!!!!(!!(!!T)&!(!!!((!!(!!(F))))))))))";
+    assert(evaluate(test, result, res) == 0 && res == false);
     string pf;
+    
+    //smallbergs test cases
     bool answer;
     assert(evaluate("T^ F", pf, answer) == 0  &&  pf == "TF^"  &&  answer);
     assert(evaluate("T^", pf, answer) == 1);
@@ -237,5 +256,6 @@ int main()
            &&  pf == "FF!TF&&^"  &&  !answer);
     assert(evaluate(" F  ", pf, answer) == 0 &&  pf == "F"  &&  !answer);
     assert(evaluate("((T))", pf, answer) == 0 &&  pf == "T"  &&  answer);
-    cerr<<"Passed all test case"<<endl;
+    
+    cerr<<"Passed all test cases!"<<endl;
 }
