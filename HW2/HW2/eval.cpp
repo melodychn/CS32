@@ -40,7 +40,6 @@ bool convert(string infix, string& postfix)
     postfix = "";
     //initialize operator stack to empty
     stack<char> opt_stack;
-    stack<char> postfix_s; //stack in postfix notation
     //if infix is empty
     if(infix.size()==0)
         return false;
@@ -53,9 +52,9 @@ bool convert(string infix, string& postfix)
             case 'T':
             case 'F':
                 //check for what comes before an operand cannot be an operand
-                if(k > 0&&(infix[k-1]=='T'||infix[k-1]=='T'))
+                if((k > 0)&&(infix[k-1]=='T'||infix[k-1]=='F'))
                     return false;
-                postfix_s.push(infix[k]);
+                postfix+=infix[k]; //append to postfix
                 count++;
                 break;
             case '(':
@@ -63,14 +62,16 @@ bool convert(string infix, string& postfix)
                 opt_stack.push(infix[k]);
                 break;
             case ')':
-                if(opt_stack.top()=='('&&postfix_s.empty()) //not a valid string if () with nothing valid inside
+                if(opt_stack.empty())
                     return false;
-                while(opt_stack.top()!='(') //pop stack until matching (
+                if(opt_stack.top()=='('&&postfix.size()==0) //not a valid string if () with nothing valid inside
+                    return false;
+                while(!opt_stack.empty()&&opt_stack.top()!='(') //pop stack until matching (
                 {
-                    postfix_s.push(opt_stack.top());
+                    postfix+=opt_stack.top();
                     opt_stack.pop();
                 }
-                if(count%2==0) //check for only odd # inside ()
+                if(opt_stack.empty()||count%2==0) //if opt_stack is empty, means that did not find ( || check for only odd # inside (), does not allow for ()
                     return false;
                 opt_stack.pop();
                 break;
@@ -91,7 +92,7 @@ bool convert(string infix, string& postfix)
                     if(!(one||two)){ //if current & ^ does not fulfill one and two
                         break;
                     }
-                    postfix_s.push(opt_stack.top());
+                    postfix+=opt_stack.top();
                     opt_stack.pop();
                 }
                 opt_stack.push(infix[k]); //push current operator onto stack
@@ -102,21 +103,10 @@ bool convert(string infix, string& postfix)
                 return false;
         }
     }
-    //append operator stack to postfix stack
+    //append operator stack to postfix
     while (!opt_stack.empty()) {
-        postfix_s.push(opt_stack.top());
+        postfix+=opt_stack.top();
         opt_stack.pop();
-    }
-    stack<char> temp; //temp stack to hold values
-    //flip the postfix stack with temp stack
-    while(!postfix_s.empty()){
-        temp.push(postfix_s.top());
-        postfix_s.pop();
-    }
-    //append to postfix string in right order
-    while (!temp.empty()) {
-        postfix+=temp.top();
-        temp.pop();
     }
     return true;
 }
@@ -128,7 +118,7 @@ bool evaluale_postfix(string postfix, char & result)
     for(int k=0; k<postfix.size();k++){
         if(postfix[k]=='T'||postfix[k]=='F'){ //operand case
             opd.push(postfix[k]);
-        }else if(postfix[k]=='!'){
+        }else if(postfix[k]=='!' && !opd.empty()){
             char temp = opd.top();
             opd.pop();
             //apply ! logic
@@ -238,7 +228,7 @@ int main()
     test = "((((!!!!(!!(!!T)&!(!!!((!!(!!(F))))))))))";
     assert(evaluate(test, result, res) == 0 && res == false);
     string pf;
-    
+
     //smallbergs test cases
     bool answer;
     assert(evaluate("T^ F", pf, answer) == 0  &&  pf == "TF^"  &&  answer);
@@ -256,6 +246,39 @@ int main()
            &&  pf == "FF!TF&&^"  &&  !answer);
     assert(evaluate(" F  ", pf, answer) == 0 &&  pf == "F"  &&  !answer);
     assert(evaluate("((T))", pf, answer) == 0 &&  pf == "T"  &&  answer);
-    
+
+    assert(evaluate("T", pf, answer) == 0 && answer == true);
+    assert(evaluate("(F)", pf, answer) == 0 && answer == false);
+    assert(evaluate("T ^(F)", pf, answer) == 0 && answer == true);
+    assert(evaluate("T ^ !F", pf, answer) == 0 && answer == false);
+    assert(evaluate("!(T&!!  !!F)", pf, answer) == 0 && answer == true);
+    assert(evaluate("!T&F ", pf, answer) == 0 && answer == false);
+    assert(evaluate("T^F&F", pf, answer) == 0 && answer == true);
+    assert(evaluate("T&! (F^T&T^F  )^!!!(F&T&F)", pf, answer) == 0 && answer == true);
+    assert(evaluate("TS DF:L", pf, answer) == 1);
+    assert(evaluate("( F^T&!  F)", pf, answer) == 0 && answer == true);
+    assert(evaluate("(( F))&((! T))", pf, answer) == 0 && answer == false);
+    assert(evaluate("T^!F&T^T^(!F&T^!!T&F)", pf, answer) == 0 && answer == false);
+    assert(evaluate("!!(F^T&F)", pf, answer) == 0 && answer == false);
+    assert(evaluate("F^!T&T^!F", pf, answer) == 0 && answer == true);
+    assert(evaluate("T&(F^!T&  T^!F)&!!(F^T& !F)", pf, answer) == 0 && answer == true);
+    assert(evaluate("T^ F", pf, answer) == 0 && pf == "TF^"  &&  answer);
+    assert(evaluate("T^", pf, answer) == 1);
+    assert(evaluate("F F", pf, answer) == 1);
+    assert(evaluate("TF", pf, answer) == 1);
+    assert(evaluate("()", pf, answer) == 1);
+    assert(evaluate("()T", pf, answer) == 1);
+    assert(evaluate("T(F^T)", pf, answer) == 1);
+    assert(evaluate("T(&T)", pf, answer) == 1);
+    assert(evaluate("(T&(F^F)", pf, answer) == 1);
+    assert(evaluate("T|F", pf, answer) == 1);
+    assert(evaluate("T&()F", pf, answer) == 1);
+    assert(evaluate("T(&)F", pf, answer) == 1);
+    assert(evaluate("T&F^T()", pf, answer) == 1);
+    assert(evaluate("T&(F&T))&((T&T)", pf, answer) == 1);
+    assert(evaluate("F  ^  !F & (T&F) ", pf, answer) == 0
+           && pf == "FF!TF&&^" && !answer);
+    assert(evaluate(" F  ", pf, answer) == 0 && pf == "F" && !answer);
+    assert(evaluate("((((T))))", pf, answer) == 0 && pf == "T"  &&  answer);
     cerr<<"Passed all test cases!"<<endl;
 }

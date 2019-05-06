@@ -1,0 +1,33 @@
+Melody Chen
+705120273
+HW 2 
+
+Problem 2
+1 r: 3 c: 5
+2 r: 3 c: 6
+3 r: 3 c: 4
+4 r: 2 c: 4
+5 r: 1 c: 4
+6 r: 1 c: 3
+7 r: 1 c: 2
+8 r: 1 c: 1
+9 r: 2 c: 1
+10 r: 3 c: 3
+11 r: 4 c: 5
+12 r: 5 c: 5
+
+Problem 4
+1 r: 3 c: 5
+2 r: 4 c: 5
+3 r: 3 c: 4
+4 r: 3 c: 6
+5 r: 5 c: 5
+6 r: 3 c: 3
+7 r: 2 c: 4
+8 r: 6 c: 5
+9 r: 5 c: 4
+10 r: 1 c: 4
+11 r: 7 c: 5
+12 r: 5 c: 3
+
+The two algorithms are different in that the way they choose which coordinate to visit is different. Since one is a queue and one is a stack, one looks at the top of the list and one looks at the bottom of the list to find which coordinate to visit.  Thus, they visit cells in a different order because even though they start at the same point and choose which coordinates get push in the same way, the coordinate that they pop off the list and visit is always different, one from the front, one from the end. Thus, they will solve the maze in different number of steps, because they approach which coordinates to look at differently
