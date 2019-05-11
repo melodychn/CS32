@@ -134,11 +134,11 @@ int main()
     media[1] = new Phone("(310) 825 3894", VOICE);
     media[2] = new Phone("(213) 389 9060", TEXT);
     media[3] = new EmailAccount("jbroon@ucla.edu");
-    
+
     cout << "Send the message." << endl;
     for (int k = 0; k < 4; k++)
         send(media[k], "Major power outage in West L.A.");
-    
+
     // Clean up the media before exiting
     cout << "Cleaning up." << endl;
     for (int k = 0; k < 4; k++)
