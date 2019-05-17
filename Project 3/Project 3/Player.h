@@ -26,27 +26,32 @@ public:
     //Every concrete class derived from this class must implement this function so that if the player were to be playing side s and had to make a move given board b, the function returns the move the player would choose. If no move is possible, return −1.
     virtual ~Player();
     //Since this class is designed as a base class, it should have a virtual destructor.
+private:
+    std::string m_name;
 };
 
 class HumanPlayer: public Player
 {
 public:
-    HumanPlayer();
+    HumanPlayer(std::string name);
+    bool isInteractive() const;
     int chooseMove(const Board& b, Side s) const;
 };
 
 class BadPlayer: public Player
 {
 public:
-    BadPlayer();
+    BadPlayer(std::string name);
     int chooseMove(const Board& b, Side s) const;
 };
 
 class SmartPlayer: public Player
 {
 public:
-    SmartPlayer();
+    SmartPlayer(std::string name);
     int chooseMove(const Board& b, Side s) const;
+private:
+    void chooseMove1(const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const;
 };
 
 #endif /* Player_h */
