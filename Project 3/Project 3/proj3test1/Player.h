@@ -43,9 +43,6 @@ class BadPlayer: public Player
 public:
     BadPlayer(std::string name);
     int chooseMove(const Board& b, Side s) const;
-private:
-    void smartMove(const Board& board, const Side player, const Side& originalPlayer,
-                              int& bestHole, int& value, int& counter) const;
 };
 
 class SmartPlayer: public Player
@@ -57,13 +54,4 @@ private:
     void chooseMove1(const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const;
 };
 
-//for testing purposes 
-class SmartPlayer2: public Player
-{
-public:
-    SmartPlayer2(std::string name);
-    int chooseMove(const Board& b, Side s) const;
-private:
-    void chooseMove1(const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const;
-};
 #endif /* Player_h */

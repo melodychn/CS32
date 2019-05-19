@@ -144,7 +144,7 @@ int Game::beans(Side s, int hole) const
 void Game::moveAllBeansToPot()
 {
     string winner = m_board.beansInPlay(Side::NORTH)==0?m_south->name():m_north->name();
-    cout<<"Sweeping remaining beans into "<<winner<<"'s pot."<<endl;
+    cout<<"Sweeping remaining beans into owner's pot."<<endl;
     for(int k = 0; k<m_board.holes(); k++){
         m_board.moveToPot(Side::SOUTH, k+1, Side::SOUTH);
         m_board.moveToPot(Side::NORTH, k+1, Side::NORTH);

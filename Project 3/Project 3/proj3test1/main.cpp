@@ -13,7 +13,7 @@ using namespace std;
 #include "Player.h"
 #include "Game.h"
 int main() {
-    Board h(6,4); //board with 5 holes each with 3 beans
+    Board h(6,5); //board with 5 holes each with 3 beans
     SmartPlayer Josh("Josh");
 //Josh.chooseMove(h, Side::SOUTH);
 //    assert(h.holes()==5);
@@ -46,8 +46,8 @@ int main() {
 //    assert(c.beans(Side::SOUTH, 2)==0);
 //    cerr<<"Passed all test cases!"<<endl;
 //    SmartPlayer Josh("Josh");
-    SmartPlayer2 Melody("Melody");
-    Game test(h, &Josh, &Melody); //south, north
+    SmartPlayer Melody("Melody");
+    Game test(h, &Josh, &Melody);
     test.play();
     return 0;
 }
