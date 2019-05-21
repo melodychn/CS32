@@ -9,9 +9,11 @@
 #include "Game.h"
 #include "Board.h"
 #include "Player.h"
+#include "Side.h"
 #include <iostream>
 #include <string>
 using namespace std;
+
 Game::Game(const Board& b, Player* south, Player* north)
     :m_board(b), m_south(south), m_north(north), current(south), s_current(Side::SOUTH), m_over(false)
 //Construct a Game to be played with the indicated players on a copy of the board b. The player on the south side always moves first.
@@ -51,10 +53,7 @@ void Game::status(bool& over, bool& hasWinner, Side& winner) const
 {
     //determine if more moves are possible
     if(m_board.beansInPlay(Side::NORTH)==0&&m_board.beansInPlay(Side::SOUTH)==0){
-        //the game is not over unless one side looses all beans
         over = true;
-        //move beans to pot
-        //moveAllBeansToPot();
         if(m_board.beans(Side::SOUTH, 0)==m_board.beans(Side::NORTH, 0))
             //tie if both sides have same # beans in pot
             hasWinner = false;
@@ -76,7 +75,7 @@ bool Game::move()
         return false;
     }
     //if game is not over, make a complete move for current player
-    int move = current->chooseMove(m_board, s_current), endHole=-1;
+    int move = current->chooseMove(m_board, s_current), endHole;
     Side endSide;
     if(!m_board.sow(s_current, move, endSide, endHole)) //start sowing
         cerr << "Error with sowing!" <<endl;
@@ -122,9 +121,8 @@ void Game::play()
     do{
         move();
         cout<<"Press enter to continue.";
-        string temp;
         cin.ignore(10000,'\n');
-        getline(cin, temp);
+        cout<<endl;
         status(m_over, m_hasWinner, m_winner);
     }while(!m_over);
     display();

@@ -46,6 +46,7 @@ int HumanPlayer::chooseMove(const Board& b, Side s) const
     while(cont){
         cout<<"Select a hole, "<<name()<<": ";
         cin>>response;
+        cin.ignore(10000,'\n');
         if(!(response>0&&response<=b.holes())){ //if hole is out of range
             cont = true;
             cout<<"The hole must be from 1 to "<<b.holes()<<"."<<endl;
@@ -90,15 +91,16 @@ SmartPlayer::SmartPlayer(string name):Player(name)
 int SmartPlayer::chooseMove(const Board& b, Side s) const
 {
     int besthole=-2, value=0, deepness = 0;
-    chooseMove1(b, s, s, besthole, value, deepness); //run recursive tree to find the best move
-    cout<<"Besthole: "<<besthole<<" Value: "<<value<<endl;
+    AlarmClock ac(1500); //setup alarm clock, don't want function to run for too long
+    chooseMove1(ac, b, s, s, besthole, value, deepness); //run recursive tree to find the best move
+    cout<<Player::name()<<" chooses hole "<<besthole<<" with value of "<<value<<"."<<endl;
     return besthole;
 }
 
 
-void SmartPlayer::chooseMove1(const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const
+void SmartPlayer::chooseMove1(AlarmClock& ac, const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const
 {
-    Side opp = original==Side::NORTH?Side::SOUTH:Side::NORTH; //original opposite, doesn't change throughout recursion
+    Side orig_opp = original==Side::NORTH?Side::SOUTH:Side::NORTH; //original opposite, doesn't change throughout recursion
     if(b.beansInPlay(Side::SOUTH)==0||b.beansInPlay(Side::NORTH)==0){ //if one side is winner i.e. no more beans on one side
         besthole = -1;
         Board temp(b); //need a temp board
@@ -108,17 +110,16 @@ void SmartPlayer::chooseMove1(const Board&b, Side original, Side player, int& be
         }
         if(temp.beans(player, 0) == temp.beans(player==Side::NORTH?Side::SOUTH:Side::NORTH, 0)) //if there's a tie
             value = 0;
-        else if(temp.beans(original, 0) > temp.beans(opp, 0)) //check who won
+        else if(temp.beans(original, 0) > temp.beans(orig_opp, 0)) //check who won
             value = 9999;
         else
             value = -9999;
         return;
-    }else if(deepness>3){ //deepness value can vary
+    }else if(deepness>4||ac.timedOut()){ //deepness value can vary or when time runs out
         besthole = -1;
         //value = (b.beans(original, 0)) - (b.beans(opp, 0)); //heuristic
-        value = (b.beans(original, 0)+0.5*b.beansInPlay(original)) - (b.beans(opp, 0)+b.beansInPlay(opp)); //heuristic
+        value = (b.beans(original, 0)) - (b.beans(orig_opp, 0)); //heuristic
         return;
-        
     }
     //if doesn't fit above two criterions above
     for(int k=0; k<b.holes(); k++){
@@ -131,7 +132,7 @@ void SmartPlayer::chooseMove1(const Board&b, Side original, Side player, int& be
             //if you sow and end up in your own hole, you will choose again for yourself
             if(player==temp_s && temp_hole ==0){
                 int tempdeep = deepness; //deepness is not incremented, because still same player's turn
-                chooseMove1(temp, original, player, temp_besthole, temp_value, tempdeep); //go again
+                chooseMove1(ac, temp, original, player, temp_besthole, temp_value, tempdeep); //go again
             }else{
                 Side temp_opp = player==Side::NORTH?Side::SOUTH:Side::NORTH; //current opposite, depends on current player
                 //capture code
@@ -141,7 +142,7 @@ void SmartPlayer::chooseMove1(const Board&b, Side original, Side player, int& be
                     temp.moveToPot(player, temp_hole, player); //move ur own beans at that hole to ur pot
                 }
                 int tempdeep = deepness +1; //increment deepness for following recursion
-                chooseMove1(temp, original, temp_opp, temp_besthole, temp_value, tempdeep); //do move for current player's opponent
+                chooseMove1(ac, temp, original, temp_opp, temp_besthole, temp_value, tempdeep); //do move for current player's opponent
             }
             //check whether to update value and besthole or not
             if(besthole==-2||(original==player&&temp_value>value)){ //for original player
@@ -156,75 +157,78 @@ void SmartPlayer::chooseMove1(const Board&b, Side original, Side player, int& be
     return;
 }
 
-SmartPlayer2::SmartPlayer2(string name):Player(name)
-{
-    
-}
+// //SmartPlayer2 implemented only for testing better heuristic, will not be submit
+//SmartPlayer2::SmartPlayer2(string name):Player(name)
+//{
+//
+//}
 
-int SmartPlayer2::chooseMove(const Board& b, Side s) const
-{
-    int besthole=-2, value=0, deepness = 0;
-    chooseMove1(b, s, s, besthole, value, deepness); //run recursive tree to find the best move
-    cout<<"Besthole: "<<besthole<<" Value: "<<value<<endl;
-    return besthole;
-}
-
-
-void SmartPlayer2::chooseMove1(const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const
-{
-    Side opp = original==Side::NORTH?Side::SOUTH:Side::NORTH; //original opposite, doesn't change throughout recursion
-    if(b.beansInPlay(Side::SOUTH)==0||b.beansInPlay(Side::NORTH)==0){ //if one side is winner i.e. no more beans on one side
-        besthole = -1;
-        Board temp(b); //need a temp board
-        for(int k = 0; k<b.holes(); k++){ //need to move all beans to pot, since there is a winner
-            temp.moveToPot(Side::SOUTH, k+1, Side::SOUTH);
-            temp.moveToPot(Side::NORTH, k+1, Side::NORTH);
-        }
-        if(temp.beans(player, 0) == temp.beans(player==Side::NORTH?Side::SOUTH:Side::NORTH, 0)) //if there's a tie
-            value = 0;
-        else if(temp.beans(original, 0) > temp.beans(opp, 0)) //check who won
-            value = 9999;
-        else
-            value = -9999;
-        return;
-    }else if(deepness>3){ //deepness value can vary
-        besthole = -1;
-        //value = (b.beans(original, 0)) - (b.beans(opp, 0)); //heuristic
-        value = (b.beans(original, 0)) - (b.beans(opp, 0)); //heuristic
-        return;
-    }
-    //if doesn't fit above two criterions above
-    for(int k=0; k<b.holes(); k++){
-        if(b.beans(player, k+1)!=0){ //check if hole is empty, only go ahead if hole is not empty
-            //"make" the move
-            Board temp(b); //temporary board
-            Side temp_s; //temporary side
-            int temp_hole = -1, temp_value=0, temp_besthole=-2; //temporary value to plug in later, besthole -2 to ensure no overlap with other hole values
-            temp.sow(player, k+1, temp_s, temp_hole);
-            //if you sow and end up in your own hole, you will choose again for yourself
-            if(player==temp_s && temp_hole ==0){
-                int tempdeep = deepness; //deepness is not incremented, because still same player's turn
-                chooseMove1(temp, original, player, temp_besthole, temp_value, tempdeep); //go again
-            }else{
-                Side temp_opp = player==Side::NORTH?Side::SOUTH:Side::NORTH; //current opposite, depends on current player
-                //capture code
-                if(player==temp_s&&temp_hole!=0&&temp.beans(temp_s, temp_hole)==1
-                   &&temp.beans(temp_opp, temp_hole)!=0){ //check for a capture
-                    temp.moveToPot(temp_opp, temp_hole, player); //move opp beans to ur own pot
-                    temp.moveToPot(player, temp_hole, player); //move ur own beans at that hole to ur pot
-                }
-                int tempdeep = deepness +1; //increment deepness for following recursion
-                chooseMove1(temp, original, temp_opp, temp_besthole, temp_value, tempdeep); //do move for current player's opponent
-            }
-            //check whether to update value and besthole or not
-            if(besthole==-2||(original==player&&temp_value>value)){ //for original player
-                besthole = k+1;
-                value = temp_value;
-            }else if(original!=player&&temp_value<value){ //for not original player
-                besthole = k+1;
-                value = temp_value;
-            }
-        }
-    }
-    return;
-}
+//
+//int SmartPlayer2::chooseMove(const Board& b, Side s) const
+//{
+//    int besthole=-2, value=0, deepness = 0;
+//    AlarmClock ac(1500);
+//    chooseMove1(ac, b, s, s, besthole, value, deepness); //run recursive tree to find the best move
+//    cout<<"Besthole: "<<besthole<<" Value: "<<value<<endl;
+//    return besthole;
+//}
+//
+//
+//void SmartPlayer2::chooseMove1(AlarmClock& ac, const Board&b, Side original, Side player, int& besthole, int& value, int& deepness) const
+//{
+//    Side opp = original==Side::NORTH?Side::SOUTH:Side::NORTH; //original opposite, doesn't change throughout recursion
+//    if(b.beansInPlay(Side::SOUTH)==0||b.beansInPlay(Side::NORTH)==0){ //if one side is winner i.e. no more beans on one side
+//        besthole = -1;
+//        Board temp(b); //need a temp board
+//        for(int k = 0; k<b.holes(); k++){ //need to move all beans to pot, since there is a winner
+//            temp.moveToPot(Side::SOUTH, k+1, Side::SOUTH);
+//            temp.moveToPot(Side::NORTH, k+1, Side::NORTH);
+//        }
+//        if(temp.beans(player, 0) == temp.beans(player==Side::NORTH?Side::SOUTH:Side::NORTH, 0)) //if there's a tie
+//            value = 0;
+//        else if(temp.beans(original, 0) > temp.beans(opp, 0)) //check who won
+//            value = 9999;
+//        else
+//            value = -9999;
+//        return;
+//    }else if(deepness>4){ //deepness value can vary
+//        besthole = -1;
+//        //value = (b.beans(original, 0)) - (b.beans(opp, 0)); //heuristic
+//        value = (b.beans(original, 0)) - (b.beans(opp, 0)); //heuristic
+//        return;
+//    }
+//    //if doesn't fit above two criterions above
+//    for(int k=0; k<b.holes(); k++){
+//        if(b.beans(player, k+1)!=0){ //check if hole is empty, only go ahead if hole is not empty
+//            //"make" the move
+//            Board temp(b); //temporary board
+//            Side temp_s; //temporary side
+//            int temp_hole = -1, temp_value=0, temp_besthole=-2; //temporary value to plug in later, besthole -2 to ensure no overlap with other hole values
+//            temp.sow(player, k+1, temp_s, temp_hole);
+//            //if you sow and end up in your own hole, you will choose again for yourself
+//            if(player==temp_s && temp_hole ==0){
+//                int tempdeep = deepness; //deepness is not incremented, because still same player's turn
+//                chooseMove1(ac, temp, original, player, temp_besthole, temp_value, tempdeep); //go again
+//            }else{
+//                Side temp_opp = player==Side::NORTH?Side::SOUTH:Side::NORTH; //current opposite, depends on current player
+//                //capture code
+//                if(player==temp_s&&temp_hole!=0&&temp.beans(temp_s, temp_hole)==1
+//                   &&temp.beans(temp_opp, temp_hole)!=0){ //check for a capture
+//                    temp.moveToPot(temp_opp, temp_hole, player); //move opp beans to ur own pot
+//                    temp.moveToPot(player, temp_hole, player); //move ur own beans at that hole to ur pot
+//                }
+//                int tempdeep = deepness +1; //increment deepness for following recursion
+//                chooseMove1(ac, temp, original, temp_opp, temp_besthole, temp_value, tempdeep); //do move for current player's opponent
+//            }
+//            //check whether to update value and besthole or not
+//            if(besthole==-2||(original==player&&temp_value>value)){ //for original player
+//                besthole = k+1;
+//                value = temp_value;
+//            }else if(original!=player&&temp_value<value){ //for not original player
+//                besthole = k+1;
+//                value = temp_value;
+//            }
+//        }
+//    }
+//    return;
+//}

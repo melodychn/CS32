@@ -17,6 +17,7 @@ public:
     Board(int nHoles, int nInitialBeansPerHole);
     //Construct a Board with the indicated number of holes per side (not counting the pot) and initial number of beans per hole. If nHoles is not positive, act as if it were 1; if nInitialBeansPerHole is negative, act as if it were 0.
     Board(const Board& other); //copy constructor for board
+    Board &operator = (const Board &other); //assignment operator for board 
     ~Board(); //destructor for dynamic arrays
     int holes() const;
     //Return the number of holes on a side (not counting the pot).
@@ -32,6 +33,7 @@ public:
     //If the indicated hole is invalid or a pot, return false without changing anything. Otherwise, move all the beans in hole (s,hole) into the pot belonging to potOwner and return true.
     bool setBeans(Side s, int hole, int beans);
     //If the indicated hole is invalid or beans is negative, this function returns false without changing anything. Otherwise, it will return true after setting the number of beans in the indicated hole or pot to the value of the third parameter. (This may change what beansInPlay and totalBeans return if they are called later.) This function exists solely so that we and you can more easily test your program: None of your code that implements the member functions of any class is allowed to call this function directly or indirectly. (We'll show an example of its use below.)
+//    void display(); //for testing purposes
 private:
     void addBeans(Side s, int hole, int beans);
     bool shiftBeansOneSide(Side, Side& s, int& beans_to_move, int hole, int& endHole, Side& endSide);
