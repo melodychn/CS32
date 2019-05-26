@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
+
 Board::Board(int nHoles, int nInitialBeansPerHole)
 {
     if(nHoles<=0) //set correct limitations for nholes

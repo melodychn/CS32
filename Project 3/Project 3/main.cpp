@@ -113,7 +113,6 @@ int main() {
 //    assert(l.move()==false); //should not be able to move
 //
 //    cerr<<"Passed all test cases!"<<endl;
-
     return 0;
 }
 

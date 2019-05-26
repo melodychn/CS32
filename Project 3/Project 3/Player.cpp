@@ -141,7 +141,7 @@ void SmartPlayer::chooseMove1(AlarmClock& ac, const Board&b, Side original, Side
                     temp.moveToPot(temp_opp, temp_hole, player); //move opp beans to ur own pot
                     temp.moveToPot(player, temp_hole, player); //move ur own beans at that hole to ur pot
                 }
-                int tempdeep = deepness +1; //increment deepness for following recursion
+                int tempdeep = deepness+1; //increment deepness for following recursion
                 chooseMove1(ac, temp, original, temp_opp, temp_besthole, temp_value, tempdeep); //do move for current player's opponent
             }
             //check whether to update value and besthole or not
