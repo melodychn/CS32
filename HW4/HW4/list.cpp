@@ -34,8 +34,6 @@ Domain::~Domain()
 void listAll(const Domain* d, string path) // two-parameter overload
 {
     //You will write this code.
-    if(d==nullptr)
-        return;
     for(int k=0; k< d->subdomains().size(); k++){
         listAll(d->subdomains()[k], d->subdomains()[k]->label()+(path==""?"":("."+path)));
     }
